@@ -5,7 +5,8 @@ import ProductCartPrice from './ProductCartPrice.jsx'
 import ProductCartDiscountprice from './ProductCartDiscountprice.jsx'
 import ProductCartRating from './ProductCartRating.jsx'
 
-export default function Leftscroll({category,brands}) {
+export default function Leftscroll({category,brands,filterObj}) {
+   
     return (
         <div>
             <div className='flex justify-between'>
@@ -26,7 +27,7 @@ export default function Leftscroll({category,brands}) {
                     {
                         category.map((itmes, index) => {
                             return (
-                                <LeftscrollFirst data={itmes} key={index} />
+                                <LeftscrollFirst filterObj={filterObj}  data={itmes} key={index} />
                             )
                         })
                     }
@@ -45,14 +46,14 @@ export default function Leftscroll({category,brands}) {
                     {
                         brands.map((itmes, index) => {
                             return (
-                                <LeftscrollSecond datasnd={itmes} key={index} />
+                                <LeftscrollSecond  filterObj={filterObj}  datasnd={itmes} key={index} />
                             )
                         })
                     }
                 </from>
             </div>
             <div className='border-[1px] p-[10px_5px] h-[200px] '>
-                   <ProductCartPrice/>
+                   <ProductCartPrice filterObj={filterObj}/>
             </div>
             <div className='border-[1px] p-[10px_5px] h-[200px] '>
                 <ProductCartDiscountprice/>
@@ -67,18 +68,44 @@ export default function Leftscroll({category,brands}) {
 
     )
 }
-function LeftscrollFirst({ data }) {
+function LeftscrollFirst({ data,filterObj }) {
+     let {categoryFilter,setCategoryFilter}=filterObj
+
+     let getCheckValue=(event)=>{
+        if(event.target.checked && !categoryFilter.includes(event.target.value)){
+            
+            setCategoryFilter([...categoryFilter,event.target.value])
+        }   
+        else{
+            //["beauty","furniture"]
+            let finalAns= categoryFilter.filter((item)=>item!=event.target.value)
+            setCategoryFilter(finalAns)
+        }
+     }
     return (
         <div className='flex gap-[20px] font-medium text-[16px] pt-[10px]'>
-            <input type="checkbox" name="checbox" value=" " />
+            <input onChange={getCheckValue} type="checkbox" name="checbox" value={data.slug} />
             <label>{data.name}</label>
         </div>
     )
 }
-function LeftscrollSecond({ datasnd }) {
+function LeftscrollSecond({ datasnd,filterObj }) {
+    let { brandFilter,setBrandFilter}=filterObj
+    let getCheckValue=(event)=>{
+        if(event.target.checked && !brandFilter.includes(event.target.value)){
+            
+            setBrandFilter([...brandFilter,event.target.value])
+        }   
+        else{
+            //["beauty","furniture"]
+            let finalAns= brandFilter.filter((item)=>item!=event.target.value)
+            setBrandFilter(finalAns)
+        }
+     }
+
     return (
         <div className='flex gap-[20px] font-medium text-[16px] pt-[10px]'>
-            <input type="checkbox" name="checbox" value=" " />
+            <input type="checkbox" onChange={getCheckValue} name="checbox" value={datasnd.slug} />
             <label>{datasnd.name}</label>
         </div>
     )

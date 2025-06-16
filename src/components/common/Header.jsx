@@ -1,8 +1,21 @@
-import React from 'react'
-import { Link } from 'react-router'
+import React, { useContext, useEffect } from 'react'
+import { Link, useLocation } from 'react-router'
+import { cartContext } from '../../context/MainContext'
 
 
 export default function Header() {
+  let {cart}=useContext(cartContext)
+  let {pathname}  =useLocation()  //Object
+
+  // console.log(pageLocation.pathname)
+
+  useEffect(()=>{
+      window.scrollTo({
+        top:"0",
+       
+      })
+  },[pathname])
+
   return (
     <header className='sticky top-[0%] z-[99999]'>
       <nav className="bg-white border-gray-200 dark:bg-gray-900 shadow-lg ">
@@ -26,7 +39,12 @@ export default function Header() {
                 <Link to='/product-list' className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent  ">Product</Link>
               </li>
               <li>
-                <Link to='/cart-items' className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent   ">Cart</Link>
+                <Link to='/about' className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent  ">About</Link>
+              </li>
+              <li>
+                <Link to='/cart-items' className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent   ">Cart ({cart.length}) </Link>
+             
+             
               </li>
               <li>
                 <Link to='/register-page' className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register</Link>

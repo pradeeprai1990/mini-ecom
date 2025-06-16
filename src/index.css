@@ -1,2 +1,6 @@
 @import "tailwindcss";
 
+
+.pagination li a{
+    background-color: green !important;
+}
