@@ -42,10 +42,11 @@ export default function Productlistmyntra({ product,setSorting }) {
 
 function ProductCartMyntra({ data }) {
 
-  let {cart,setCart}=useContext(cartContext) //[]
+  let {login,cart,setCart}=useContext(cartContext) //[]
 
   let {id,image,name,price}=data
   let addtoCart=()=>{
+    if(login){
       let cartObj={
         id,
         image,
@@ -56,6 +57,11 @@ function ProductCartMyntra({ data }) {
 
       setCart([...cart,cartObj]) //[cartObj]
       toast.success("Item Added in Cart!");
+    }
+    else{
+      toast.error("Please Login");
+    }
+      
       //console.log(cartObj)
   }
 // let s=[ {id:1,name:'pradeep'},{id:2,name:'pradeep'} ]

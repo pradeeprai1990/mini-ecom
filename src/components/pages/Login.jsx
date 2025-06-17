@@ -1,8 +1,50 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
+import { GoogleAuthProvider,getAuth, signInWithPopup } from "firebase/auth";
+import { app } from '../../config/fireBaseConfig';
+import { cartContext } from '../../context/MainContext';
+import { useNavigate } from 'react-router';
+
 
 export default function Login() {
+ let navigate =useNavigate()
+ let {login,setLogin} =useContext(cartContext)
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth(app);
+  let googleLogin=()=>{
+    
+      signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        setLogin(user)
+        console.log(token)
+        console.log(user)
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  }
+
+
+  useEffect(()=>{
+    if(login){
+      navigate('/')
+    }
+  },[login])
   return (
     <div className='max-w-[800px]  border-2  mx-auto mt-[50px] rounded-[8px] '>
       <div className='shadow-lg  grid lg:grid-cols-[40%_auto] sm:grid-cols-1 grid-cols-1'>
@@ -41,7 +83,9 @@ export default function Login() {
           <h3 className='text-center font-medium py-[10px]'>or login with</h3>
 
           <div>
-            <button className='w-full py-[8px]  text-[17px] my-[10px]  border-2  rounded-[8px] cursor-pointer flex items-center gap-[10px] justify-center duration-300 hover:bg-black hover:text-white'><FaGoogle  /><h3>Login with google</h3></button>
+            <button onClick={googleLogin} className='w-full py-[8px]  text-[17px] my-[10px]  border-2  rounded-[8px] cursor-pointer flex items-center gap-[10px] justify-center duration-300 hover:bg-black hover:text-white'><FaGoogle  /><h3>Login with google</h3></button>
+           
+           
             <button className='w-full py-[8px] text-[17px] my-[10px] border-2 rounded-[8px] cursor-pointer  flex items-center gap-[10px] justify-center duration-300 hover:bg-[#548cf6] hover:text-white'><FaFacebookF /><h3>Login with facebook</h3></button>
           </div>
 
